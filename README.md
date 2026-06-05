@@ -147,3 +147,7 @@ graph TD
 
 ## 🛡️ Pacing and Compliance
 This software is intended for research, internal operations, and authorized CRM workflows. Please ensure your messaging schedules comply with local anti-spam regulations (e.g. TCPA, GDPR) and WhatsApp Terms of Service. Always use a dedicated outreach number.
+
+
+---
+*Made with Antigravity*

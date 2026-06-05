@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # WhatsApp Gateway Engine
+  openwa:
+    image: openwa/wa-automate:latest
+    ports:
+      - "8080:8080"
+    command: -p 8080 --socket
+    volumes:
+      - ./openwa_session:/app/session
+    restart: unless-stopped
+
+  # Local Search & OSINT Aggregator (SearXNG)
+  odysseus:
+    image: searxng/searxng:latest
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./searxng:/etc/searxng
+    restart: unless-stopped
+
+  # Context Optimization & Compression Layer (Inline Node Mock compression)
+  headroom:
+    image: node:alpine
+    ports:
+      - "8787:8787"
+    command: >
+      node -e "const http = require('http'); http.createServer((req, res) => { let body = ''; req.on('data', chunk => { body += chunk; }); req.on('end', () => { let content = ''; try { content = JSON.parse(body).content || ''; } catch(e){} const compressed = content.substring(0, 1000); res.writeHead(200, {'Content-Type':'application/json'}); res.end(JSON.stringify({compressed_content:compressed})); }); }).listen(8787);"
+    restart: unless-stopped
